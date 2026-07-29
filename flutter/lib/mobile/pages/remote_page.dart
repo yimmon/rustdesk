@@ -60,7 +60,7 @@ class RemotePage extends StatefulWidget {
 
 class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
   Timer? _timer;
-  bool _showBar = !isWebDesktop;
+  bool _showBar = false;
   bool _showGestureHelp = false;
   String _value = '';
   Orientation? _currentOrientation;
@@ -457,7 +457,9 @@ class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
               : null,
           floatingActionButton: !showActionButton
               ? null
-              : FloatingActionButton(
+              : Opacity(
+                  opacity: 0.0,
+                  child: FloatingActionButton(
                   mini: !keyboardIsVisible,
                   child: Icon(
                     (keyboardIsVisible || _showGestureHelp)
@@ -480,6 +482,7 @@ class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
                       }
                     });
                   }),
+                ),
           bottomNavigationBar: Obx(() => Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
