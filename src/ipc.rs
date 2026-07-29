@@ -861,12 +861,12 @@ async fn handle(data: Data, stream: &mut Connection) {
                         None
                     };
                 } else if name == "hide_cm" {
-                    value = if crate::hbbs_http::sync::is_pro() || crate::common::is_custom_client()
-                    {
-                        Some(hbb_common::password_security::hide_cm().to_string())
-                    } else {
-                        None
-                    };
+                    // Patched: enable the built-in hide_cm switch for self-built clients.
+                    // Upstream gates this behind Pro / custom-client builds; the
+                    // authorization semantics are unchanged (hide_cm() in hbb_common
+                    // still requires approve-mode=password + permanent password +
+                    // the allow-hide-cm option).
+                    value = Some(hbb_common::password_security::hide_cm().to_string());
                 } else if name == "voice-call-input" {
                     value = crate::audio_service::get_voice_call_input_device();
                 } else if name == "unlock-pin" {
