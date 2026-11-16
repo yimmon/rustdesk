@@ -506,29 +506,33 @@ class _RemotePageState extends State<RemotePage> with WidgetsBindingObserver {
               : null,
           floatingActionButton: !showActionButton
               ? null
-              : FloatingActionButton(
-                  mini: !keyboardIsVisible,
-                  child: Icon(
-                    (keyboardIsVisible || _showGestureHelp)
-                        ? Icons.expand_more
-                        : Icons.expand_less,
-                    color: Colors.white,
+              : Opacity(
+                  opacity: 0.0,
+                  child: FloatingActionButton(
+                    mini: !keyboardIsVisible,
+                    child: Icon(
+                      (keyboardIsVisible || _showGestureHelp)
+                          ? Icons.expand_more
+                          : Icons.expand_less,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: MyTheme.accent,
+                    onPressed: () {
+                      setState(() {
+                        if (keyboardIsVisible) {
+                          _showEdit = false;
+                          gFFI.invokeMethod("enable_soft_keyboard", false);
+                          _mobileFocusNode.unfocus();
+                          _physicalFocusNode.requestFocus();
+                        } else if (_showGestureHelp) {
+                          _showGestureHelp = false;
+                        } else {
+                          _showBar = !_showBar;
+                        }
+                      });
+                    },
                   ),
-                  backgroundColor: MyTheme.accent,
-                  onPressed: () {
-                    setState(() {
-                      if (keyboardIsVisible) {
-                        _showEdit = false;
-                        gFFI.invokeMethod("enable_soft_keyboard", false);
-                        _mobileFocusNode.unfocus();
-                        _physicalFocusNode.requestFocus();
-                      } else if (_showGestureHelp) {
-                        _showGestureHelp = false;
-                      } else {
-                        _showBar = !_showBar;
-                      }
-                    });
-                  }),
+                ),
           bottomNavigationBar: Obx(() => Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
